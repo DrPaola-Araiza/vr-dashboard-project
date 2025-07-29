@@ -128,3 +128,80 @@ with center_col:
             st.markdown("#### Last Month play count")
         with row4_col3:
             st.markdown(f"### {last_month_count}")
+# --- EMOTION AND MENTAL STATES SHIFTS ---
+st.divider()
+
+# We need these new libraries
+import plotly.express as px
+import circlify # Our new tool for packing circles
+
+# Create invisible columns to center this whole section
+_ , center_col, _ = st.columns([1, 4, 1])
+
+with center_col:
+    # 1. Centered title and description
+    st.markdown("<h2 style='text-align: center;'>Emotion and mental states shifts</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>The bubbles below show users' overall emotional states before and after using the Liminal Platform.</p>", unsafe_allow_html=True)
+
+    # Prepare the data for the bubbles
+    before_data = pd.DataFrame({
+        'mood': ["Anxious", "Irritated", "Pain", "Bored", "Sad", "Excited", "Relax", "Cheerful", "Calm", "Focus", "Rested", "Mental vitality"],
+        'size': [30, 25, 28, 22, 20, 10, 18, 9, 15, 8, 9, 7],
+    })
+
+    after_data = pd.DataFrame({
+        'mood': ["Calm", "Excited", "Relax", "Focus", "Cheerful", "Rested", "Mental vitality", "Anxious", "Irritated", "Pain", "Bored", "Sad"],
+        'size': [30, 28, 29, 25, 26, 24, 22, 8, 7, 9, 6, 5],
+    })
+
+    # Calculate bubble positions using circlify
+    before_circles = circlify.circlify(before_data['size'].tolist(), show_enclosure=False)
+    after_circles = circlify.circlify(after_data['size'].tolist(), show_enclosure=False)
+
+    before_data['x'] = [c.x for c in before_circles]
+    before_data['y'] = [c.y for c in before_circles]
+    after_data['x'] = [c.x for c in after_circles]
+    after_data['y'] = [c.y for c in after_circles]
+
+    # Define the specific color for each mood
+    mood_color_map = {
+        "Calm": "#2ca02c", "Excited": "#98df8a", "Relax": "#55a630", "Cheerful": "#80b918", "Rested": "#aacc00",
+        "Anxious": "#d62728", "Irritated": "#ff6b6b", "Bored": "#c44536", "Pain": "#8d0801",
+        "Sad": "#1f77b4",
+        "Focus": "#ffc300", "Mental vitality": "#ffd60a"
+    }
+
+    # Create three columns for the charts and the divider line
+    col1, mid_col, col2 = st.columns([10, 1, 10])
+
+    with col1:
+        st.subheader("Before")
+        fig_before = px.scatter(
+            before_data, x='x', y='y', size='size', color='mood', text='mood',
+            color_discrete_map=mood_color_map, size_max=80
+        )
+        fig_before.update_traces(textposition='middle center', textfont=dict(color='white', size=14))
+        fig_before.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis=dict(visible=False), yaxis=dict(visible=False))
+        st.plotly_chart(fig_before, use_container_width=True)
+
+    with mid_col:
+        st.markdown("<div style='width: 2px; height: 400px; background-color: #333; margin: auto;'></div>", unsafe_allow_html=True)
+
+    with col2:
+        st.subheader("After")
+        fig_after = px.scatter(
+            after_data, x='x', y='y', size='size', color='mood', text='mood',
+            color_discrete_map=mood_color_map, size_max=80
+        )
+        fig_after.update_traces(textposition='middle center', textfont=dict(color='white', size=14))
+        fig_after.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis=dict(visible=False), yaxis=dict(visible=False))
+        st.plotly_chart(fig_after, use_container_width=True)
+    
+    st.divider()
+
+    # 2. & 3. New centered table for the summary stats
+    stat_col1, stat_col2 = st.columns(2)
+    with stat_col1:
+        st.metric(label="Positive Moods Increased by", value="53.9%")
+    with stat_col2:
+        st.metric(label="Negative Moods Decrease by", value="20.8%")
