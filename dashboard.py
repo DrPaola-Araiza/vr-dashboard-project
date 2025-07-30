@@ -389,7 +389,7 @@ footer_html = """
     .footer .footer-links a { color: #A9A9A9; text-decoration: none; margin: 0 10px; }
 </style>
 <div class="footer">
-    <img src="https://i.imgur.com/L4aK3xS.png" class="logo-img">
+    <img src="logo.png" class="logo-img">
     <p>© 2025 - Liminal VR</p>
     <div class="social-icons">
         <a href="#"><img src="https://i.imgur.com/4z15M62.png"></a>
