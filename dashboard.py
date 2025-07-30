@@ -324,3 +324,86 @@ with center_col:
     # CHANGE 2: Added a centered markdown for the subtitle to ensure perfect alignment
     st.markdown("<p style='text-align: center;'>Where Users Spend the Most Time or User Engagement by Category</p>", unsafe_allow_html=True)
     st.plotly_chart(fig_donut, use_container_width=True)
+# --- MOST EFFECTIVE EXPERIENCES TABLE (NEW NATIVE METHOD) ---
+st.divider()
+
+# 1. Prepare the data for the table
+table_data = pd.DataFrame({
+    "Category": ["Calm", "Energy", "Awe", "Focus", "Pain Relief", "Sleep"],
+    "Top Experience": ["Aureole Hypnosis", "Cyber Punch", "Samsara", "Rhythmic Flow", "Aureole Relief", "Retreat"],
+    "Effectiveness Score": ["4.8 ⭐", "4.7 ⭐", "4.5 ⭐", "4.1 ⭐", "4.4 ⭐", "4.5 ⭐"],
+    "Image": [
+        "https://i.imgur.com/7Z2WJ44.png",
+        "https://i.imgur.com/KDKk3sT.png",
+        "https://i.imgur.com/SztmG3z.png",
+        "https://i.imgur.com/wPzL6aY.png",
+        "https://i.imgur.com/7Z2WJ44.png",
+        "https://i.imgur.com/A4y9j2N.png"
+    ]
+})
+
+# 2. Display the section title in a centered column
+_ , center_col, _ = st.columns([1, 10, 1])
+with center_col:
+    st.markdown("<h3 style='text-align: center;'>Most Effective Experiences Per Category</h3>", unsafe_allow_html=True)
+    
+    # 3. Create a header row using columns
+    header_cols = st.columns([2, 3, 2, 2])
+    header_cols[0].markdown("**Category**")
+    header_cols[1].markdown("**Top Experience**")
+    header_cols[2].markdown("**Effectiveness Score**")
+    header_cols[3].markdown("**Image**")
+    
+    st.divider()
+
+    # 4. Loop through the data and create a row for each experience using columns
+    for index, row in table_data.iterrows():
+        row_cols = st.columns([2, 3, 2, 2])
+        row_cols[0].write(row['Category'])
+        row_cols[1].write(row['Top Experience'])
+        row_cols[2].write(row['Effectiveness Score'])
+        row_cols[3].image(row['Image'], width=120)
+        st.divider()
+# --- USER PANEL IN SIDEBAR ---
+# Add this at the end of all your st.sidebar calls
+st.sidebar.divider()
+
+user_panel_html = """
+<div style="font-family: Arial; font-size: 18px;">
+    <p style="font-weight: bold;">SwinUniversity</p>
+    <p>PaolaAdmin ➡️</p>
+</div>
+"""
+st.sidebar.markdown(user_panel_html, unsafe_allow_html=True)
+st.sidebar.button("Manage")
+# --- FOOTER ---
+st.divider()
+
+# Using markdown with HTML/CSS for a custom footer
+# NOTE: Replace '#' in the links and the image URLs with your actual links and images.
+footer_html = """
+<style>
+    .footer { text-align: center; padding: 2rem 0; color: #A9A9A9; }
+    .footer .logo-img { width: 120px; margin-bottom: 1rem; }
+    .footer .social-icons img { width: 24px; margin: 0 10px; }
+    .footer .footer-links a { color: #A9A9A9; text-decoration: none; margin: 0 10px; }
+</style>
+<div class="footer">
+    <img src="https://i.imgur.com/L4aK3xS.png" class="logo-img">
+    <p>© 2025 - Liminal VR</p>
+    <div class="social-icons">
+        <a href="#"><img src="https://i.imgur.com/4z15M62.png"></a>
+        <a href="#"><img src="https://i.imgur.com/1Gj2Z2F.png"></a>
+        <a href="#"><img src="https://i.imgur.com/4z15M62.png"></a>
+        <a href="#"><img src="https://i.imgur.com/1Gj2Z2F.png"></a>
+        <a href="#"><img src="https://i.imgur.com/4z15M62.png"></a>
+    </div>
+    <div class="footer-links">
+        <a href="#">ABOUT US</a> - 
+        <a href="#">CONTACT</a> - 
+        <a href="#">TERMS OF SERVICE</a> - 
+        <a href="#">PRIVACY POLICY</a>
+    </div>
+</div>
+"""
+st.markdown(footer_html, unsafe_allow_html=True)
