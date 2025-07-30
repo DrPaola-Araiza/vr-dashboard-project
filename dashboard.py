@@ -276,7 +276,7 @@ fig_gauge.update_layout(
 _ , center_col, _ = st.columns([1, 2, 1])
 with center_col:
     st.plotly_chart(fig_gauge, use_container_width=True)
-  # --- CATEGORY PREFERENCES DONUT CHART ---
+ # --- CATEGORY PREFERENCES DONUT CHART ---
 st.divider()
 
 # 1. Prepare the data from your design
@@ -296,18 +296,19 @@ fig_donut = go.Figure(data=[go.Pie(
     marker_colors=category_colors,
     textinfo='percent',
     textfont_size=16,
-    textposition='outside', # CHANGE 1: Moves the percentages outside the chart
-    insidetextorientation='horizontal'
+    textposition='outside',
+    insidetextorientation='horizontal',
+    hovertemplate="<b>%{label}</b><br>%{percent}<extra></extra>"
 )])
 
 # 3. Update the layout to match your design
 fig_donut.update_layout(
-    # CHANGE 2: The title is now handled by st.markdown below for better alignment
+    # CHANGE 1: The title is now fully handled by st.markdown below
     showlegend=True,
     legend=dict(
         orientation="h",
         yanchor="bottom",
-        y=1.02, # Adjusted position slightly for the new subtitle
+        y=1.0,
         xanchor="center",
         x=0.5,
         font=dict(size=16)
@@ -320,6 +321,6 @@ fig_donut.update_layout(
 _ , center_col, _ = st.columns([1, 4, 1])
 with center_col:
     st.markdown("<h3 style='text-align: center;'>Category Preferences</h3>", unsafe_allow_html=True)
-    # CHANGE 3: Added a centered markdown for the subtitle
-    st.markdown("<p style='text-align: center;'>WHERE USERS SPEND THE MOST TIME OR USER ENGAGEMENT BY CATEGORY</p>", unsafe_allow_html=True)
+    # CHANGE 2: Added a centered markdown for the subtitle to ensure perfect alignment
+    st.markdown("<p style='text-align: center;'>Where Users Spend the Most Time or User Engagement by Category</p>", unsafe_allow_html=True)
     st.plotly_chart(fig_donut, use_container_width=True)
