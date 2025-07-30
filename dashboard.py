@@ -245,3 +245,34 @@ with center_col:
             20.8%
         </p>
         """, unsafe_allow_html=True)
+      # --- AWE INTENSITY GAUGE ---
+st.divider()
+
+# We need to import plotly's graph objects for this chart
+import plotly.graph_objects as go
+
+# 1. Define the value for our gauge
+awe_intensity = 70
+
+# 2. Create the gauge chart figure
+fig_gauge = go.Figure(go.Indicator(
+    mode = "gauge+number",
+    value = awe_intensity,
+    number = {'suffix': "%"}, # CHANGE 1: Added a suffix to show the '%' symbol
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    title = {'text': "Awe Intensity", 'font': {'size': 24}},
+    gauge = {
+        'axis': {'range': [None, 100]},
+        'bar': {'color': "#8A2BE2"}, # This bar now clearly represents the 70%
+        # CHANGE 2: Removed the confusing 'steps' for a cleaner look
+    }))
+
+fig_gauge.update_layout(
+    paper_bgcolor = "rgba(0,0,0,0)", # Makes the background transparent
+    font = {'color': "white", 'family': "Arial"}
+)
+
+# 3. Display the chart in a centered column
+_ , center_col, _ = st.columns([1, 2, 1])
+with center_col:
+    st.plotly_chart(fig_gauge, use_container_width=True)
