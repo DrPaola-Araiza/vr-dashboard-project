@@ -276,3 +276,50 @@ fig_gauge.update_layout(
 _ , center_col, _ = st.columns([1, 2, 1])
 with center_col:
     st.plotly_chart(fig_gauge, use_container_width=True)
+  # --- CATEGORY PREFERENCES DONUT CHART ---
+st.divider()
+
+# 1. Prepare the data from your design
+category_data = pd.DataFrame({
+    'Category': ['Energy', 'Awe', 'Calm', 'Sleep', 'Focus', 'Pain Relief'],
+    'Percentage': [34, 26, 18, 13, 5, 4]
+})
+
+# Define the colors for each category to match the design
+category_colors = ['#f28e2b', '#AF7AC5', '#2E86C1', '#28B463', '#5DADE2', '#1E8449']
+
+# 2. Create the donut chart figure
+fig_donut = go.Figure(data=[go.Pie(
+    labels=category_data['Category'],
+    values=category_data['Percentage'],
+    hole=.6,
+    marker_colors=category_colors,
+    textinfo='percent',
+    textfont_size=16,
+    textposition='outside', # CHANGE 1: Moves the percentages outside the chart
+    insidetextorientation='horizontal'
+)])
+
+# 3. Update the layout to match your design
+fig_donut.update_layout(
+    # CHANGE 2: The title is now handled by st.markdown below for better alignment
+    showlegend=True,
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02, # Adjusted position slightly for the new subtitle
+        xanchor="center",
+        x=0.5,
+        font=dict(size=16)
+    ),
+    paper_bgcolor="rgba(0,0,0,0)",
+    font = {'color': "white", 'family': "Arial"}
+)
+
+# 4. Display the chart in a centered section
+_ , center_col, _ = st.columns([1, 4, 1])
+with center_col:
+    st.markdown("<h3 style='text-align: center;'>Category Preferences</h3>", unsafe_allow_html=True)
+    # CHANGE 3: Added a centered markdown for the subtitle
+    st.markdown("<p style='text-align: center;'>WHERE USERS SPEND THE MOST TIME OR USER ENGAGEMENT BY CATEGORY</p>", unsafe_allow_html=True)
+    st.plotly_chart(fig_donut, use_container_width=True)
