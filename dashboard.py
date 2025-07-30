@@ -139,7 +139,7 @@ import circlify # Our new tool for packing circles
 _ , center_col, _ = st.columns([1, 4, 1])
 
 with center_col:
-    # 1. Centered title and description
+    # Centered title and description
     st.markdown("<h2 style='text-align: center;'>Emotion and mental states shifts</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>The bubbles below show users' overall emotional states before and after using the Liminal Platform.</p>", unsafe_allow_html=True)
 
@@ -178,10 +178,19 @@ with center_col:
         st.subheader("Before")
         fig_before = px.scatter(
             before_data, x='x', y='y', size='size', color='mood', text='mood',
-            color_discrete_map=mood_color_map, size_max=80
+            color_discrete_map=mood_color_map,
+            size_max=60
         )
         fig_before.update_traces(textposition='middle center', textfont=dict(color='white', size=14))
-        fig_before.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis=dict(visible=False), yaxis=dict(visible=False))
+        # This part cleans up the chart to look like your design
+        fig_before.update_layout(
+            showlegend=False,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            xaxis=dict(visible=False),
+            # CHANGE: Added 'scaleanchor' and 'scaleratio' to make the chart a square
+            yaxis=dict(visible=False, scaleanchor="x", scaleratio=1)
+        )
         st.plotly_chart(fig_before, use_container_width=True)
 
     with mid_col:
@@ -191,17 +200,48 @@ with center_col:
         st.subheader("After")
         fig_after = px.scatter(
             after_data, x='x', y='y', size='size', color='mood', text='mood',
-            color_discrete_map=mood_color_map, size_max=80
+            color_discrete_map=mood_color_map,
+            size_max=60
         )
         fig_after.update_traces(textposition='middle center', textfont=dict(color='white', size=14))
-        fig_after.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis=dict(visible=False), yaxis=dict(visible=False))
+        # This part cleans up the chart to look like your design
+        fig_after.update_layout(
+            showlegend=False,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            xaxis=dict(visible=False),
+            # CHANGE: Added 'scaleanchor' and 'scaleratio' to make the chart a square
+            yaxis=dict(visible=False, scaleanchor="x", scaleratio=1)
+        )
         st.plotly_chart(fig_after, use_container_width=True)
-    
+
     st.divider()
 
-    # 2. & 3. New centered table for the summary stats
-    stat_col1, stat_col2 = st.columns(2)
-    with stat_col1:
-        st.metric(label="Positive Moods Increased by", value="53.9%")
-    with stat_col2:
-        st.metric(label="Negative Moods Decrease by", value="20.8%")
+    # New centered table for the summary stats
+    summary_col1, summary_col2 = st.columns(2)
+    with summary_col1:
+        st.markdown("""
+        <p style="font-size: 20px; text-align: right;">
+            <span style="color: #2ca02c;">▲</span> Positive Moods Increased by
+        </p>
+        """, unsafe_allow_html=True)
+    with summary_col2:
+        st.markdown("""
+        <p style="font-size: 20px; text-align: left; font-weight: bold;">
+            53.9%
+        </p>
+        """, unsafe_allow_html=True)
+
+    summary_col3, summary_col4 = st.columns(2)
+    with summary_col3:
+        st.markdown("""
+        <p style="font-size: 20px; text-align: right;">
+            <span style="color: #d62728;">▼</span> Negative Moods Decrease by
+        </p>
+        """, unsafe_allow_html=True)
+    with summary_col4:
+        st.markdown("""
+        <p style="font-size: 20px; text-align: left; font-weight: bold;">
+            20.8%
+        </p>
+        """, unsafe_allow_html=True)
