@@ -9,32 +9,44 @@ st.set_page_config(
     page_icon="🧠", # This is the icon that shows up in the browser tab
     layout="wide" # This makes the page use the full width
 )
-# --- SIDEBAR ---
-st.sidebar.image("logo.png", width=200) # Show your logo
+# --- CUSTOM SIDEBAR ---
+# This code block creates the sidebar in the correct order.
+# You must copy this ENTIRE block to the top of every page file (e.g., 2_Calm.py).
 
+# 1. Hide the default Streamlit navigation
+st.markdown("""<style>
+    [data-testid="stSidebarNav"] {
+        display: none;
+    }
+</style>""", unsafe_allow_html=True)
+
+# 2. Logo at the top
+st.sidebar.image("logo.png", width=200)
+
+# 3. "Analytics" header
 st.sidebar.header("Analytics")
 
-# This is how we make the "General User Insights" link look selected
-st.sidebar.markdown("""
-<a href="#" style="
-    padding: 0.5rem 1rem;
-    background-color: #E6F2FE;
-    color: #1C64F2;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-weight: bold;
-">General User Insights</a>
-""", unsafe_allow_html=True)
+# 4. Custom navigation links
+# CHANGE: This now correctly points to your Dashboard.py file
+st.sidebar.page_link("Dashboard.py", label="General User Insights", icon="📊")
+st.sidebar.page_link("pages/2_Calm.py", label="Calm")
+st.sidebar.page_link("pages/3_Energy.py", label="Energy")
+st.sidebar.page_link("pages/4_Awe.py", label="Awe")
+st.sidebar.page_link("pages/5_Pain_Relief.py", label="Pain Relief")
+st.sidebar.page_link("pages/6_Focus.py", label="Focus")
+st.sidebar.page_link("pages/7_Sleep.py", label="Sleep")
+# Add more page links here for Energy, Awe, etc. as you create the files
 
-# These are the other links, now with bigger text!
-st.sidebar.markdown('<p style="font-size: 18px;">Calm</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="font-size: 18px;">Energy</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="font-size: 18px;">Awe</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="font-size: 18px;">Pain Relief</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="font-size: 18px;">Focus</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="font-size: 18px;">Sleep</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="font-size: 18px;">Manage</p>', unsafe_allow_html=True)
-
+# 5. User Panel at the bottom
+st.sidebar.divider()
+user_panel_html = """
+<div style="font-family: Arial; font-size: 18px;">
+    <p style="font-weight: bold;">SwinUniversity</p>
+    <p>PaolaAdmin ➡️</p>
+</div>
+"""
+st.sidebar.markdown(user_panel_html, unsafe_allow_html=True)
+st.sidebar.button("Manage")
 # --- MAIN CONTENT ---
 st.title("Analytics Dashboard")
 st.markdown("This dashboard provides key insights into how Liminal's VR experiences influence well-being and engagement.")
@@ -364,18 +376,6 @@ with center_col:
         row_cols[2].write(row['Effectiveness Score'])
         row_cols[3].image(row['Image'], width=120)
         st.divider()
-# --- USER PANEL IN SIDEBAR ---
-# Add this at the end of all your st.sidebar calls
-st.sidebar.divider()
-
-user_panel_html = """
-<div style="font-family: Arial; font-size: 18px;">
-    <p style="font-weight: bold;">SwinUniversity</p>
-    <p>PaolaAdmin ➡️</p>
-</div>
-"""
-st.sidebar.markdown(user_panel_html, unsafe_allow_html=True)
-st.sidebar.button("Manage")
 # --- FOOTER ---
 st.divider()
 
